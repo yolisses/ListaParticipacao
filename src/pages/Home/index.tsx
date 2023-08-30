@@ -1,30 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import './styles.css';
+import { useState, useEffect } from "react";
+import "./styles.css";
 
-import { Card } from '../../components/Card';
+import { Card } from "../../components/Card";
+import { Student } from "../../student";
 
 export function Home() {
-  const [studentName, setStudentName] = useState('');
-  const [students, setStudents] = useState([]);
-  const [user, setUser] = useState({ name: '', avatar: '' });
+  const [studentName, setStudentName] = useState("");
+  const [students, setStudents] = useState<Student[]>([]);
+  const [user, setUser] = useState({ name: "", avatar: "" });
 
   function handleAddStudent() {
-    const newStudent = {
+    const newStudent: Student = {
       name: studentName,
       time: new Date().toLocaleTimeString("pt-br", {
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-      })
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      }),
     };
 
-    setStudents(prevState => [...prevState, newStudent]);
+    setStudents((prevState) => [...prevState, newStudent]);
   }
-
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch('https://api.github.com/users/rodrigorgtic');
+      const response = await fetch("https://api.github.com/users/rodrigorgtic");
       const data = await response.json();
       console.log("DADOS ===> ", data);
 
@@ -51,22 +51,16 @@ export function Home() {
       <input
         type="text"
         placeholder="Digite o nome..."
-        onChange={e => setStudentName(e.target.value)}
+        onChange={(e) => setStudentName(e.target.value)}
       />
 
       <button type="button" onClick={handleAddStudent}>
         Adicionar
       </button>
 
-      {
-        students.map(student => (
-          <Card
-            key={student.time}
-            name={student.name}
-            time={student.time}
-          />
-        ))
-      }
+      {students.map((student) => (
+        <Card key={student.time} name={student.name} time={student.time} />
+      ))}
     </div>
-  )
+  );
 }
